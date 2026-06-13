@@ -8,7 +8,26 @@ using Matrix = std::vector<std::vector<double>>;
 // Computes L using cholesky decomposition
 // Sigma must be a symmetric positive-definite NxN matrix.
 
+// Check for symmetric
+inline bool isSymmetric(const Matrix& sigma, double tol = 1e-8) {
+    size_t n = sigma.size();
+    for (const auto& row : sigma){
+        if (row.size() != n) return false;
+    }
+    for (size_t i = 0; i < n; ++i) {
+        for (size_t j = i + 1; j < n; ++j) {
+            if (std::abs(sigma[i][j] - sigma[j][i]) > tol) return 0;
+        }
+    }
+    return true;
+}
+
 inline Matrix choleskyDecompose(const Matrix& sigma) {
+    if (!isSymmetric(sigma)) {
+        throw std::invalid_argument(
+            "choleskydecompose: input matrix is not symmetric or exceeded the tolerance."
+        )
+    }
     size_t n = sigma.size();
     Matrix L(n, std::vector<double> (n,0.0));
     for (size_t i=0;i<n;++i) {
