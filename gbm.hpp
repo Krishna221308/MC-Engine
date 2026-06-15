@@ -7,12 +7,12 @@ struct AssetParams {
     double S0;
     double mu;
     double sigma;
-}
+};
 
 // Returns a matrix of shape [numSteps + 1][numAssets], including the inital price at t=0
 inline Matrix simulatePath(const std::vector<AssetParams>& assets, CorrelatedNormalGenerator& gen, int numSteps, double dt) {
     size_t n=assets.size();
-    Matrix path(numsteps+1,std::vector<double> (n));
+    Matrix path(numSteps+1,std::vector<double> (n));
 
     for (size_t i = 0; i < n; ++i) path[0][i]=assets[i].S0;
 
